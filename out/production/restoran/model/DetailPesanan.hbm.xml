@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 31, 2015 5:01:10 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.DetailPesanan" table="detail_pesanan" catalog="restoran" optimistic-lock="version">
+        <id name="idDetailPesanan" type="int">
+            <column name="id_detail_pesanan" />
+            <generator class="assigned" />
+        </id>
+        <property name="idPesanan" type="int">
+            <column name="id_pesanan" not-null="true" />
+        </property>
+        <property name="idMenu" type="int">
+            <column name="id_menu" not-null="true" />
+        </property>
+        <property name="jumlah" type="int">
+            <column name="jumlah" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

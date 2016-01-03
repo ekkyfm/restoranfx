@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 31, 2015 5:01:10 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Pesanan" table="pesanan" catalog="restoran" optimistic-lock="version">
+        <id name="idPesanan" type="int">
+            <column name="id_pesanan" />
+            <generator class="assigned" />
+        </id>
+        <property name="waktu" type="timestamp">
+            <column name="waktu" length="19" not-null="true" />
+        </property>
+        <property name="noMeja" type="int">
+            <column name="no_meja" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="2" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

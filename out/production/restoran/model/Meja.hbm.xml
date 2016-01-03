@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 31, 2015 5:01:10 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="model.Meja" table="meja" catalog="restoran" optimistic-lock="version">
+        <id name="noMeja" type="java.lang.Integer">
+            <column name="no_meja" />
+            <generator class="identity" />
+        </id>
+        <property name="kategori" type="string">
+            <column name="kategori" length="10" not-null="true" />
+        </property>
+        <property name="lantai" type="int">
+            <column name="lantai" not-null="true" />
+        </property>
+        <property name="status" type="int">
+            <column name="status" not-null="true" />
+        </property>
+        <property name="kapasitas" type="int">
+            <column name="kapasitas" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
