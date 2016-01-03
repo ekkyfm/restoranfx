@@ -11,12 +11,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/ekky/Downloads/restoran/src/model/Meja.java</file>
-            <file>file:/home/ekky/Downloads/restoran/src/dao/GenericDao.java</file>
-            <file>file:/home/ekky/Downloads/restoran/src/view/MainPesanan.fxml</file>
-            <file>file:/home/ekky/Downloads/restoran/src/model/Pesanan.java</file>
-            <file>file:/home/ekky/Downloads/restoran/src/controller/PesananController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
