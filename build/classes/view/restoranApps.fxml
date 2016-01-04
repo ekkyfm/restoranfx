@@ -16,12 +16,12 @@
       <Pane layoutX="101.0" layoutY="118.0" prefHeight="249.0" prefWidth="319.0" style="-fx-background-color: #ffffff; -fx-background-radius: 20;">
          <children>
             <TextField layoutX="51.0" layoutY="92.0" prefHeight="25.0" prefWidth="218.0" promptText="Username" />
-            <Label layoutX="152.0" layoutY="36.0" text="ADMIN" textFill="RED">
+            <Label layoutX="180.0" layoutY="36.0" text="IN" textFill="RED">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label layoutX="77.0" layoutY="36.0" text="Login">
+            <Label layoutX="107.0" layoutY="36.0" text="Login">
                <font>
                   <Font size="30.0" />
                </font>
