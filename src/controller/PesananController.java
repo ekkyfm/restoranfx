@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.AbstractList;
 import java.util.List;
 import java.util.Observable;
 import static javafx.application.Application.launch;
@@ -258,7 +259,22 @@ public class PesananController extends Application {
     
     @FXML
     public void handleNew(){
+        selectedMenu.clear();
         
+        detailMenuTableView.setItems(selectedMenu);
+        detailMenuTableView.setDisable(false);
+        detailMenuTableView.setEditable(true);
+        
+        
+        
+    }
+    
+    public static <T,U> void refreshTableView(TableView<T> tableView, List<TableColumn<T,U>> columns, List<T> rows) {        
+        tableView.getColumns().clear();
+        tableView.getColumns().addAll(columns);
+
+        ObservableList<T> list = FXCollections.observableArrayList(rows);
+        tableView.setItems(list);
     }
     
     @FXML
@@ -277,7 +293,7 @@ public class PesananController extends Application {
                 alert.setHeaderText("Silahkan pilih minimal 1 menu!");
                 alert.showAndWait();
             }else{
-                try{
+//                try{
                     dao.save(new Pesanan(Date.from(Instant.now()) , Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()), "0"), selectedMenu);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.initOwner(this.getPrimaryStage());
@@ -286,14 +302,23 @@ public class PesananController extends Application {
                     alert.showAndWait();
                     detailMenuTableView.setEditable(false);
                     detailMenuTableView.setDisable(true);
-                }catch(Exception e){
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.initOwner(this.getPrimaryStage());
-                    alert.setTitle("Gagal");
-                    alert.setHeaderText("Data gagal disimpan");
-                    alert.setContentText("Ulangi kembali insert data atau hubungi administrator!");
-                    alert.showAndWait();
-                }
+                    List<TableColumn<Pesanan,String>> columns = null;
+                    
+                    columns.add(idPesananColumn);
+                    columns.add(noMejaColumn);
+                    columns.add(waktuColumn);
+                    columns.add(statusPesananColumn);
+                    
+                    refreshTableView(pesananTableView, columns, pesananData);
+                    
+//                }catch(Exception e){
+//                    Alert alert = new Alert(Alert.AlertType.WARNING);
+//                    alert.initOwner(this.getPrimaryStage());
+//                    alert.setTitle("Gagal");
+//                    alert.setHeaderText("Data gagal disimpan");
+//                    alert.setContentText("Ulangi kembali insert data atau hubungi administrator!");
+//                    alert.showAndWait();
+//                }
                 
             }
         
