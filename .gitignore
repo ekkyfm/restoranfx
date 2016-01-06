@@ -13,3 +13,4 @@ hs_err_pid*
 
 /src/hibernate.cfg.xml
 /src/hibernate.reveng.xml
+/dist/

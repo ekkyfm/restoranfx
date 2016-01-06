@@ -47,6 +47,7 @@ import static javafx.scene.input.KeyCode.T;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
+import model.Meja;
 import model.Menu;
 
 public class PesananController extends Application {
@@ -54,7 +55,8 @@ public class PesananController extends Application {
     private ObservableList<Menu> menuData = FXCollections.observableArrayList();
     private ObservableList<DetailPesanan> selectedMenu= FXCollections.observableArrayList();
     private ObservableList<Pesanan> pesananData= FXCollections.observableArrayList();
-    
+    private List<Meja> mejaData;
+
     private Stage primaryStage;
     private BorderPane rootLayout;
     
@@ -123,6 +125,12 @@ public class PesananController extends Application {
         return menuData; 
     }
     
+    public List getAllMejaData(){
+        GenericDao genericDao = new GenericDao();
+        mejaData =  genericDao.getAllData("from Meja");
+        return mejaData; 
+    }
+    
     
     @Override
     public void start(Stage primaryStage) {
@@ -159,7 +167,7 @@ public class PesananController extends Application {
             System.out.println(selectedMenu.size());
         });
         
-        
+        getAllMejaData();
         menuTableView.setItems(getAllMenuData());
         
         pesananTableView.getItems().clear();
@@ -202,8 +210,8 @@ public class PesananController extends Application {
 
             @Override
             public TableCell<DetailPesanan, Boolean> call(TableColumn<DetailPesanan, Boolean> param) {
-                return new ButtonCell();
-                
+                return new ButtonCell(detailMenuTableView);
+            
             }
             });
        
@@ -217,6 +225,16 @@ public class PesananController extends Application {
         detailMenuTableView.setItems(selectedMenu);
         
         detailMenuTableView.setEditable(true);
+        ObservableList<String> options =null;
+        
+        GenericDao genericDao = new GenericDao();
+        
+//        mejaData =  genericDao.getAllData("from Meja");
+//        System.out.println(mejaData);
+//        for (Meja m : mejaData) {
+//            options.add(m.getNoMeja().toString());
+//        }
+        
         noMejaCombo.getItems().addAll(1,2,3);
         
     }
@@ -225,13 +243,13 @@ public class PesananController extends Application {
 
     final Button cellButton = new Button("Hapus");
 
-         ButtonCell(){
+         ButtonCell(final TableView tblView){
 
              cellButton.setOnAction(new EventHandler<ActionEvent>(){
-
+                 
                  @Override
                  public void handle(ActionEvent t) {
-                     DetailPesanan curDetailPesanan = (DetailPesanan) ButtonCell.this.getTableView().getItems().get(ButtonCell.this.getIndex());
+                     DetailPesanan curDetailPesanan = (DetailPesanan) ButtonCell.this.getTableView().getItems().get(getTableRow().getIndex());
                      selectedMenu.remove(curDetailPesanan);
                  }
              });
@@ -243,6 +261,8 @@ public class PesananController extends Application {
              super.updateItem(t, empty);
              if(!empty){
                  setGraphic(cellButton);
+             }else{
+                 setGraphic(null);
              }
          }
     
@@ -264,9 +284,8 @@ public class PesananController extends Application {
         detailMenuTableView.setItems(selectedMenu);
         detailMenuTableView.setDisable(false);
         detailMenuTableView.setEditable(true);
-        
-        
-        
+        menuTableView.setDisable(false);
+     
     }
     
     public static <T,U> void refreshTableView(TableView<T> tableView, List<TableColumn<T,U>> columns, List<T> rows) {        
@@ -293,8 +312,23 @@ public class PesananController extends Application {
                 alert.setHeaderText("Silahkan pilih minimal 1 menu!");
                 alert.showAndWait();
             }else{
-//                try{
                     dao.save(new Pesanan(Date.from(Instant.now()) , Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()), "0"), selectedMenu);
+                    GenericDao genericDao = new GenericDao();
+                    
+                    Meja meja = new Meja();
+                    meja.setNoMeja(Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()));
+                    meja.setStatus(0);
+                    
+                    
+                    for(DetailPesanan d : selectedMenu){
+                        Menu menu = new Menu();
+                        menu.setIdMenu(d.getMenu().getIdMenu());
+                        menu.setStok(menu.getStok() - d.getJumlah());
+                        genericDao.update(menu);
+                    }
+                    
+                    
+                    genericDao.update(meja);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.initOwner(this.getPrimaryStage());
                     alert.setTitle("Gagal");
@@ -302,26 +336,19 @@ public class PesananController extends Application {
                     alert.showAndWait();
                     detailMenuTableView.setEditable(false);
                     detailMenuTableView.setDisable(true);
-                    List<TableColumn<Pesanan,String>> columns = null;
+                    menuTableView.setDisable(true);
                     
-                    columns.add(idPesananColumn);
-                    columns.add(noMejaColumn);
-                    columns.add(waktuColumn);
-                    columns.add(statusPesananColumn);
-                    
-                    refreshTableView(pesananTableView, columns, pesananData);
-                    
-//                }catch(Exception e){
-//                    Alert alert = new Alert(Alert.AlertType.WARNING);
-//                    alert.initOwner(this.getPrimaryStage());
-//                    alert.setTitle("Gagal");
-//                    alert.setHeaderText("Data gagal disimpan");
-//                    alert.setContentText("Ulangi kembali insert data atau hubungi administrator!");
-//                    alert.showAndWait();
-//                }
-                
+                    try{
+                        pesananTableView.getItems().clear();
+                        idPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("idPesanan"));
+                        noMejaColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("noMeja"));
+                        waktuColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("waktu"));
+                        statusPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("status"));
+                        pesananTableView.setItems(getAllPesananData());
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
             }
         
     }
-
 }
