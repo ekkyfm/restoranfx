@@ -25,21 +25,21 @@ public class Menu  implements java.io.Serializable {
      private String namaMenu;
      private String jenis;
      private int stok;
-     private int harga;
+     private Double harga;
      private Set detailPesanans = new HashSet(0);
 
     public Menu() {
     }
 
 	
-    public Menu(int idMenu, String namaMenu, String jenis, int stok, int harga) {
+    public Menu(int idMenu, String namaMenu, String jenis, int stok, Double harga) {
         this.idMenu = idMenu;
         this.namaMenu = namaMenu;
         this.jenis = jenis;
         this.stok = stok;
         this.harga = harga;
     }
-    public Menu(int idMenu, String namaMenu, String jenis, int stok, int harga, Set detailPesanans) {
+    public Menu(int idMenu, String namaMenu, String jenis, int stok, Double harga, Set detailPesanans) {
        this.idMenu = idMenu;
        this.namaMenu = namaMenu;
        this.jenis = jenis;
@@ -92,11 +92,11 @@ public class Menu  implements java.io.Serializable {
 
     
     @Column(name="harga", nullable=false)
-    public int getHarga() {
+    public Double getHarga() {
         return this.harga;
     }
     
-    public void setHarga(int harga) {
+    public void setHarga(Double harga) {
         this.harga = harga;
     }
 
