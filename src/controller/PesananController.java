@@ -228,12 +228,7 @@ public class PesananController extends Application {
         ObservableList<String> options =null;
         
         GenericDao genericDao = new GenericDao();
-        
-//        mejaData =  genericDao.getAllData("from Meja");
-//        System.out.println(mejaData);
-//        for (Meja m : mejaData) {
-//            options.add(m.getNoMeja().toString());
-//        }
+
         
         noMejaCombo.getItems().addAll(1,2,3);
         
