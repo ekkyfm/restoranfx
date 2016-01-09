@@ -17,7 +17,7 @@
         <property name="stok" type="int">
             <column name="stok" not-null="true" />
         </property>
-        <property name="harga" type="int">
+        <property name="harga" type="double">
             <column name="harga" not-null="true" />
         </property>
         <set name="detailPesanans" table="detail_pesanan" inverse="true" lazy="true" fetch="select">

@@ -6,8 +6,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="521.0" style="-fx-background-color: #ff2121;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="485.0" prefWidth="521.0" style="-fx-background-color: #ff0000;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <ImageView fitHeight="258.0" fitWidth="306.0" layoutX="263.0" layoutY="227.0" opacity="0.32" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/swirl_pattern.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="265.0" fitWidth="268.0" layoutX="-2.0" layoutY="220.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../image/swirl_pattern.png" />
+         </image>
+      </ImageView>
       <ImageView fitHeight="334.0" fitWidth="521.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../image/fruit-background.jpg" />
