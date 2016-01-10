@@ -6,10 +6,16 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost/restoran</property>
     <property name="hibernate.connection.username">root</property>
+<<<<<<< HEAD
     <property name="hibernate.connection.password"></property>
     <mapping resource="model/Menu.hbm.xml"/>
     <mapping resource="model/Meja.hbm.xml"/>
+=======
+    <property name="hibernate.connection.password">root</property>
+>>>>>>> 2d49bd33dd20465fd76d86bc38ae09919c320c64
     <mapping resource="model/DetailPesanan.hbm.xml"/>
+    <mapping resource="model/Menu.hbm.xml"/>
     <mapping resource="model/Pesanan.hbm.xml"/>
+    <mapping resource="model/Meja.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

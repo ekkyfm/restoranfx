@@ -89,7 +89,7 @@
          <children>
             <Pane layoutY="1.0" prefHeight="76.0" prefWidth="226.0" style="-fx-background-color: #ff3c3c;" />
             <Label layoutX="14.0" layoutY="37.0" text="Total :" textFill="WHITE" />
-            <Label layoutX="63.0" layoutY="30.0" prefHeight="19.0" prefWidth="101.0" text="label" textFill="WHITE">
+            <Label fx:id="labelHarga" layoutX="63.0" layoutY="30.0" prefHeight="19.0" prefWidth="101.0" text="label" textFill="WHITE">
                <font>
                   <Font name="Lucida Sans Demibold" size="26.0" />
                </font>
