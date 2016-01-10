@@ -28,8 +28,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 import static javafx.application.Application.launch;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -40,6 +42,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -56,6 +59,7 @@ public class PesananController extends Application {
     private ObservableList<DetailPesanan> selectedMenu= FXCollections.observableArrayList();
     private ObservableList<Pesanan> pesananData= FXCollections.observableArrayList();
     private List<Meja> mejaData;
+    private Double harga=0.0;
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -101,6 +105,9 @@ public class PesananController extends Application {
     @FXML
     private TableColumn<DetailPesanan,Boolean> aksiDetailMenuColumn;
     
+    @FXML
+    private Label labelHarga;
+    
     
     //launch this app
     public static void main(String[] args) {
@@ -121,7 +128,7 @@ public class PesananController extends Application {
     
     public ObservableList getAllPesananData(){
         GenericDao genericDao = new GenericDao();
-        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Pesanan"));
+        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Pesanan order by id_pesanan desc"));
         return menuData; 
     }
     
@@ -156,82 +163,11 @@ public class PesananController extends Application {
     @FXML
     private void initialize(){
         
-        menuTableView.getItems().clear();
-        idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("IdMenu"));
-        namaColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("NamaMenu"));
-        stokColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("Stok"));
-        hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("harga"));
-        jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
-        menuTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            setSelectedMenu(newValue);
-            System.out.println(selectedMenu.size());
-        });
-        
-        getAllMejaData();
-        menuTableView.setItems(getAllMenuData());
-        
-        pesananTableView.getItems().clear();
-        idPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("idPesanan"));
-        noMejaColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("noMeja"));
-        waktuColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("waktu"));
-        statusPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("status"));
-        pesananTableView.setItems(getAllPesananData());
-        
-        detailMenuTableView.getItems().clear();
-        namaDetailMenuColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DetailPesanan, String>, ObservableValue<String>>(){
-
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<DetailPesanan, String> param) {
-                SimpleStringProperty namaProperty = new SimpleStringProperty();
-                namaProperty.setValue(param.getValue().getMenu().getNamaMenu());
-                return namaProperty;
-            }
-            
-        });
-        jumlahDetailMenuColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DetailPesanan, Integer>, ObservableValue<Integer>>() {
-            @Override
-            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<DetailPesanan, Integer> param) {
-                return new SimpleIntegerProperty(param.getValue().getJumlah()).asObject();
-            }
-        });
-        
-        jumlahDetailMenuColumn.editableProperty().set(true);
-        
-        aksiDetailMenuColumn.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<DetailPesanan, Boolean>, ObservableValue<Boolean>>() {
-
-            @Override
-            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<DetailPesanan, Boolean> param) {
-                return new SimpleBooleanProperty(param.getValue() != null);
-            }
-        });
-        
-        aksiDetailMenuColumn.setCellFactory(new Callback<TableColumn<DetailPesanan, Boolean>, TableCell<DetailPesanan, Boolean>>() {
-
-            @Override
-            public TableCell<DetailPesanan, Boolean> call(TableColumn<DetailPesanan, Boolean> param) {
-                return new ButtonCell(detailMenuTableView);
-            
-            }
-            });
-       
-        
-        
-        jumlahDetailMenuColumn.setCellFactory(TextFieldTableCell.<DetailPesanan, Integer>forTableColumn(new IntegerStringConverter()));
-        jumlahDetailMenuColumn.setOnEditCommit((TableColumn.CellEditEvent<DetailPesanan, Integer> event) -> {
-            ((DetailPesanan) event.getTableView().getItems().get(event.getTablePosition().getRow())).setJumlah((int) event.getNewValue());
-        });
-        
-        detailMenuTableView.setItems(selectedMenu);
-        
-        detailMenuTableView.setEditable(true);
+        setTableViewMenu();
+        setTableViewPesanan();
+        setTableDetailPesanan();
         ObservableList<String> options =null;
-        
-        GenericDao genericDao = new GenericDao();
-
-        
-        noMejaCombo.getItems().addAll(1,2,3);
-        
+        setComboMeja();   
     }
     
     class ButtonCell extends TableCell<DetailPesanan, Boolean> {
@@ -275,21 +211,12 @@ public class PesananController extends Application {
     @FXML
     public void handleNew(){
         selectedMenu.clear();
-        
         detailMenuTableView.setItems(selectedMenu);
         detailMenuTableView.setDisable(false);
         detailMenuTableView.setEditable(true);
         menuTableView.setDisable(false);
-     
     }
-    
-    public static <T,U> void refreshTableView(TableView<T> tableView, List<TableColumn<T,U>> columns, List<T> rows) {        
-        tableView.getColumns().clear();
-        tableView.getColumns().addAll(columns);
-
-        ObservableList<T> list = FXCollections.observableArrayList(rows);
-        tableView.setItems(list);
-    }
+   
     
     @FXML
     public void handleSimpan(){
@@ -308,22 +235,6 @@ public class PesananController extends Application {
                 alert.showAndWait();
             }else{
                     dao.save(new Pesanan(Date.from(Instant.now()) , Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()), "0"), selectedMenu);
-                    GenericDao genericDao = new GenericDao();
-                    
-                    Meja meja = new Meja();
-                    meja.setNoMeja(Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()));
-                    meja.setStatus(0);
-                    
-                    
-                    for(DetailPesanan d : selectedMenu){
-                        Menu menu = new Menu();
-                        menu.setIdMenu(d.getMenu().getIdMenu());
-                        menu.setStok(menu.getStok() - d.getJumlah());
-                        genericDao.update(menu);
-                    }
-                    
-                    
-                    genericDao.update(meja);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.initOwner(this.getPrimaryStage());
                     alert.setTitle("Gagal");
@@ -334,16 +245,114 @@ public class PesananController extends Application {
                     menuTableView.setDisable(true);
                     
                     try{
-                        pesananTableView.getItems().clear();
-                        idPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("idPesanan"));
-                        noMejaColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("noMeja"));
-                        waktuColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("waktu"));
-                        statusPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("status"));
-                        pesananTableView.setItems(getAllPesananData());
+                        setTableViewMenu();
+                        setTableViewPesanan();
+                        setTableDetailPesanan();
+                        setComboMeja();
                     }catch(Exception e){
                         e.printStackTrace();
                     }
             }
         
     }
+    
+    public void setComboMeja(){
+        noMejaCombo.getItems().clear();
+        ArrayList<Meja> dataMeja = getMejaData();
+        for(Meja meja : dataMeja){
+            noMejaCombo.getItems().add(meja.getNoMeja());
+        }
+    }
+    
+    public void setTableViewMenu(){
+        menuTableView.getItems().clear();
+        idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("IdMenu"));
+        namaColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("NamaMenu"));
+        stokColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("Stok"));
+        hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("harga"));
+        jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
+        menuTableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Menu> observable, Menu oldValue, Menu newValue) -> {
+            Double hargaFromTable =Double.parseDouble(newValue.getHarga().toString());
+            harga = harga + hargaFromTable;
+            labelHarga.setText(harga.toString());
+            setSelectedMenu(newValue);
+            System.out.println(selectedMenu.size());
+        });
+        
+        getAllMejaData();
+        menuTableView.setItems(getAllMenuData());
+    }
+    
+    public void setTableViewPesanan(){
+        pesananTableView.getItems().clear();
+        idPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("idPesanan"));
+        noMejaColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("noMeja"));
+        waktuColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("waktu"));
+        statusPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("status"));
+        pesananTableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Pesanan> observable,  Pesanan oldValue,  Pesanan newValue)-> {
+              Set detailPesanan = newValue.getDetailPesanans();
+              List<DetailPesanan> dp = new ArrayList<DetailPesanan>(detailPesanan);
+              selectedMenu.addAll(FXCollections.observableList(dp));
+        });
+        pesananTableView.setItems(getAllPesananData());
+    }
+    
+    public void setTableDetailPesanan(){
+        labelHarga.setText("0");
+        detailMenuTableView.getItems().clear();
+        namaDetailMenuColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DetailPesanan, String>, ObservableValue<String>>(){
+
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<DetailPesanan, String> param) {
+                SimpleStringProperty namaProperty = new SimpleStringProperty();
+                    namaProperty.setValue(param.getValue().getMenu().getNamaMenu());
+                return namaProperty;
+            }
+            
+        });
+        jumlahDetailMenuColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DetailPesanan, Integer>, ObservableValue<Integer>>() {
+            @Override
+            public ObservableValue<Integer> call(TableColumn.CellDataFeatures<DetailPesanan, Integer> param) {
+                return new SimpleIntegerProperty(param.getValue().getJumlah()).asObject();
+            }
+        });
+        
+        jumlahDetailMenuColumn.editableProperty().set(true);
+        
+        aksiDetailMenuColumn.setCellValueFactory(
+                new Callback<TableColumn.CellDataFeatures<DetailPesanan, Boolean>, ObservableValue<Boolean>>() {
+
+            @Override
+            public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<DetailPesanan, Boolean> param) {
+                return new SimpleBooleanProperty(param.getValue() != null);
+            }
+        });
+        
+        aksiDetailMenuColumn.setCellFactory(new Callback<TableColumn<DetailPesanan, Boolean>, TableCell<DetailPesanan, Boolean>>() {
+
+            @Override
+            public TableCell<DetailPesanan, Boolean> call(TableColumn<DetailPesanan, Boolean> param) {
+                return new ButtonCell(detailMenuTableView);
+            
+            }
+            });
+       
+        
+        
+        jumlahDetailMenuColumn.setCellFactory(TextFieldTableCell.<DetailPesanan, Integer>forTableColumn(new IntegerStringConverter()));
+        jumlahDetailMenuColumn.setOnEditCommit((TableColumn.CellEditEvent<DetailPesanan, Integer> event) -> {
+            ((DetailPesanan) event.getTableView().getItems().get(event.getTablePosition().getRow())).setJumlah((int) event.getNewValue());
+        });
+        
+        detailMenuTableView.setItems(selectedMenu);
+        
+        detailMenuTableView.setEditable(true);
+    }
+    
+    public ArrayList getMejaData(){
+        GenericDao genericDao = new GenericDao();
+        return (ArrayList) genericDao.getAllData("from Meja where status ='1'");
+    }
+    
+    
 }

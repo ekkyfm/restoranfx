@@ -28,7 +28,6 @@ public class DaoPesanan {
         Integer noDetailPesanan= null;
         try {
             tx=session.beginTransaction();
-
             noPesanan = (Integer) session.save(pesanan);
             for (DetailPesanan detailPesanan : listDetailPesanan) {
               detailPesanan.setPesanan(pesanan);
