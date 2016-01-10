@@ -2,8 +2,12 @@ package dao; /**
  * Created by ekky on 12/30/15.
  */
 
+import java.util.ArrayList;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Meja;
+import model.Menu;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,8 +18,12 @@ import org.hibernate.cfg.Configuration;
 public class GenericDao {
     private static SessionFactory factory;
     public static void main(String[] args) {
+        List<Meja> dataMeja = new ArrayList<>();
         GenericDao dao = new GenericDao();
-        dao.getAllData("from Meja");
+//        dataMeja = dao.getData("from Meja where id_menu ="+5);
+
+//        dao.delete((Menu) dao.getData("from Menu where id_menu = 4"));
+//        dao.delete((Meja) dao.getData("from Meja where no_meja = 4"));
         
     }
     public Integer save(Object m){
@@ -42,6 +50,8 @@ public class GenericDao {
         }
         return no;
     }
+    
+    
 
     public boolean update(Object m){
         try{
@@ -128,7 +138,7 @@ public class GenericDao {
         Transaction tx = null;
         try {
             tx= session.beginTransaction();
-            Object data = (Meja) session.createQuery(query).uniqueResult();
+            Object data =  session.createQuery(query).uniqueResult();
             tx.commit();
             return data;
         }catch (HibernateException e){
