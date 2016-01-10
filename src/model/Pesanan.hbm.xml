@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 3, 2016 7:01:36 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Jan 10, 2016 3:08:16 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="model.Pesanan" table="pesanan" catalog="restoran" optimistic-lock="version">
-        <id name="idPesanan" type="int">
+        <id name="idPesanan" type="java.lang.Integer">
             <column name="id_pesanan" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="waktu" type="timestamp">
             <column name="waktu" length="19" not-null="true" />

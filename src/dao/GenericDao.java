@@ -128,7 +128,7 @@ public class GenericDao {
         Transaction tx = null;
         try {
             tx= session.beginTransaction();
-            Object data = (Meja) session.createQuery(query).uniqueResult();
+            Object data = session.createQuery(query).uniqueResult();
             tx.commit();
             return data;
         }catch (HibernateException e){
