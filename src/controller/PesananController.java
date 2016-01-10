@@ -215,7 +215,6 @@ public class PesananController extends Application {
         detailMenuTableView.setDisable(false);
         detailMenuTableView.setEditable(true);
         menuTableView.setDisable(false);
-     
     }
    
     
