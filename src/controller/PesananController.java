@@ -122,7 +122,7 @@ public class PesananController extends Application {
     //get list menu
     public ObservableList getAllMenuData(){
         GenericDao genericDao = new GenericDao();
-        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Menu"));
+        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Menu where stok <=0"));
         return menuData; 
     }
     
