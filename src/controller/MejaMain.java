@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -81,6 +82,9 @@ public class MejaMain extends Application {
     @FXML
     private Button buttonTambahMeja;
     
+    @FXML
+    private Button buttonCancelMeja;
+    
     ObservableList<Meja> dataMeja = FXCollections.observableArrayList();
     
     @Override
@@ -109,6 +113,8 @@ public class MejaMain extends Application {
     private void initialize(){
         
         mejaTableView.getItems().clear();
+        textKategori.getItems().addAll("Smoking", "No Smoking");
+        textStatus.getItems().addAll("Tersedia", "Tidak Tersedia");
         noMejaColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("noMeja"));
         kategoriColumn.setCellValueFactory(new PropertyValueFactory<Meja, String>("kategori"));
         lantaiColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("lantai"));
@@ -116,10 +122,8 @@ public class MejaMain extends Application {
         statusColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("status"));
         mejaTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> mejaDetail(newValue)  );
     
-        disable();
-        buttonUbahMeja.setDisable(true);
-        buttonHapusMeja.setDisable(true);
         textNoMeja.setVisible(false);
+        handleCancelMeja();
         mejaTableView.setItems(getAllMeja());
         
     }
@@ -131,27 +135,36 @@ public class MejaMain extends Application {
     }
     
     public void mejaDetail(Meja meja){
-        disable();
-        buttonUbahMeja.setDisable(false);
-        buttonHapusMeja.setDisable(false);
-        buttonTambahMeja.setText("Tambah");
-        buttonTambahMeja.setDisable(false);
+        if(meja != null){
+            disable();
+            buttonUbahMeja.setDisable(false);
+            buttonHapusMeja.setDisable(false);
+            buttonCancelMeja.setVisible(true);
+            buttonTambahMeja.setText("Tambah");
+
+            textNoMeja.setText(String.valueOf(meja.getNoMeja()));
+            textKategori.setValue(meja.getKategori());
+            textLantai.setText(String.valueOf(meja.getLantai()));
+            textKapasitas.setText(String.valueOf(meja.getKapasitas()));
+
+            if(meja.getStatus() == 0)
+                textStatus.setValue("Tersedia");
+            else
+                textStatus.setValue("Tidak Tersedia");
+        }
         
-        textNoMeja.setText(String.valueOf(meja.getNoMeja()));
-        // setcombobox kategori
-        textLantai.setText(String.valueOf(meja.getLantai()));
-        textKapasitas.setText(String.valueOf(meja.getKapasitas()));
-        // setcombobox status
+        
     }
     
     @FXML
     private void handleNew(){
         if(buttonTambahMeja.getText().equals("Tambah")){
             enable();
-            clearMenu();
+            clearMeja();
             buttonHapusMeja.setDisable(true);
             buttonUbahMeja.setDisable(true);
             buttonTambahMeja.setText("Simpan");
+            buttonCancelMeja.setVisible(true);
         }else{
             handleSaveMeja();
         }
@@ -174,12 +187,31 @@ public class MejaMain extends Application {
         textStatus.setDisable(true);
     }
     
-    private void clearMenu(){
+    @FXML
+    private void handleCancelMeja(){
+        clearMeja();
+        disable();
+        buttonDefault();
+    }
+    
+    private void buttonDefault(){
+        buttonTambahMeja.setText("Tambah");
+        buttonTambahMeja.setVisible(true);
+        buttonTambahMeja.setDisable(false);
+        
+        buttonCancelMeja.setVisible(false);
+        
+        buttonUbahMeja.setVisible(true);
+        buttonUbahMeja.setDisable(true);
+        
+        buttonHapusMeja.setVisible(true);
+        buttonHapusMeja.setDisable(true);
+    }
+    
+    private void clearMeja(){
         textNoMeja.setText("");
-        textKategori.setItems(null);
         textLantai.setText("");
         textKapasitas.setText("");
-        textStatus.setItems(null);
     }
     
     
@@ -187,31 +219,45 @@ public class MejaMain extends Application {
     //CRUD
     @FXML
     private void handleSaveMeja(){
-        if(textLantai.getText().isEmpty() || textKapasitas.getText().isEmpty() ){
-            //Alert
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        String regex = "[0-9]*";
+        if(textLantai.getText().isEmpty() || textKapasitas.getText().isEmpty() || textKategori.getValue() == null || textStatus.getValue() == null ){
+           alert.setHeaderText("Form tidak boleh ada yang kosong");
+           alert.showAndWait();
+        }else if(!textLantai.getText().matches(regex)){
+           alert.setHeaderText("Inputan lantai harus angka");
+           alert.showAndWait();
+        }else if(!textKapasitas.getText().matches(regex)){
+           alert.setHeaderText("Inputan kapasitas harus angka");
+           alert.showAndWait();
         }else{
             Meja meja = new Meja();
-            meja.setKategori("Smoking");
+            meja.setKategori(String.valueOf(textKategori.getValue()));
             meja.setLantai(Integer.parseInt(textLantai.getText()));
             meja.setKapasitas(Integer.parseInt(textKapasitas.getText()));
-            meja.setStatus(0);
+            
+            if(textStatus.getValue().equals("Tersedia"))
+                meja.setStatus(0);
+            else
+                meja.setStatus(1);
+            
 
             if(buttonTambahMeja.getText().equals("Simpan")){  
                 genericDao.save(meja);
+                alert2.setHeaderText("Data berhasil disimpan");
+                alert2.showAndWait();
                 loadMeja();
 
             }else if(buttonTambahMeja.getText().equals("Ubah")){
-               meja.setNoMeja(Integer.parseInt(textNoMeja.getText()));
+                meja.setNoMeja(Integer.parseInt(textNoMeja.getText()));
                 genericDao.update(meja);
+                alert2.setHeaderText("Data berhasil diubah");
+                alert2.showAndWait();
                 loadMeja();
             }
 
-            disable();
-            buttonHapusMeja.setVisible(true);
-            buttonUbahMeja.setVisible(true);
-            buttonHapusMeja.setDisable(true);
-            buttonUbahMeja.setDisable(true);
-            buttonTambahMeja.setText("Tambah");
+            handleCancelMeja();
         }
             
         
@@ -230,13 +276,22 @@ public class MejaMain extends Application {
     
     
     @FXML
-    private void handleDeleteMeja() {    
-        genericDao.delete((Meja) mejaTableView.getSelectionModel().getSelectedItem());   
-        loadMeja();  
-        disable();
-        buttonHapusMeja.setDisable(true);
-        buttonUbahMeja.setDisable(true);
-        buttonTambahMeja.setDisable(false);
+    private void handleDeleteMeja() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Apakah anda yakin akan menghapus data ini");
+        alert.showAndWait();
+        
+        
+        if(alert.getResult().getText().equals("OK")){
+            genericDao.delete((Meja) mejaTableView.getSelectionModel().getSelectedItem());
+            
+            alert.setHeaderText("Data berhasil dihapus");
+            alert.showAndWait();
+            
+            loadMeja();
+            handleCancelMeja();
+        }
     }
     
     private void loadMeja(){
@@ -249,7 +304,7 @@ public class MejaMain extends Application {
             statusColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("status"));
                   
             mejaTableView.setItems(getAllMeja());
-            clearMenu();
+            clearMeja();
         }catch(Exception e){
             e.printStackTrace();
         }

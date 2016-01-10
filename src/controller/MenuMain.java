@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,6 +40,7 @@ public class MenuMain extends Application {
     
     @FXML
     private TableView<Menu> menuTableView;
+    
     
     @FXML
     private TableColumn<Menu, Integer> idMenuColumn;
@@ -80,6 +82,9 @@ public class MenuMain extends Application {
     @FXML
     private Button buttonTambah;
     
+    @FXML
+    private Button buttonCancel;
+    
     
     ObservableList<Menu> dataMenu = FXCollections.observableArrayList();
     
@@ -96,14 +101,13 @@ public class MenuMain extends Application {
 
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-    
-    
+    }   
     
     @FXML
     private void initialize(){
         comboJenis.getItems().addAll("Makanan","Minuman");
         menuTableView.getItems().clear();
+        
         idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("idMenu"));
         namaMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("namaMenu"));
         stokColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("stok"));
@@ -111,25 +115,34 @@ public class MenuMain extends Application {
         jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
         menuTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> menuDetail(newValue)  );
 
-    
-        disable();
-        buttonUbah.setDisable(true);
-        buttonHapus.setDisable(true);
         textIdMenu.setVisible(false);
+        disable();
+        buttonDefault();
+        
         menuTableView.setItems(getAllMenu());
         
+       
     }
     
     public void menuDetail(Menu menu){
-        buttonHapus.setVisible(true);
-        buttonUbah.setVisible(true);
-        buttonHapus.setDisable(false);
-        buttonUbah.setDisable(false);
-        disable();
-        textIdMenu.setText(String.valueOf(menu.getIdMenu()));
-        textNamaMenu.setText(menu.getNamaMenu());
-        textStok.setText(String.valueOf(menu.getStok()));
-        textHarga.setText(String.valueOf(menu.getHarga()));
+        if(menu != null){
+            buttonHapus.setVisible(true);
+            buttonHapus.setDisable(false);
+
+            buttonUbah.setVisible(true);
+            buttonUbah.setDisable(false);
+
+            buttonTambah.setText("Tambah");
+
+            disable();
+
+            textIdMenu.setText(String.valueOf(menu.getIdMenu()));
+            textNamaMenu.setText(menu.getNamaMenu());
+            comboJenis.setValue(menu.getJenis());
+            textStok.setText(String.valueOf(menu.getStok()));
+            textHarga.setText(String.valueOf(menu.getHarga()));
+        }
+        
     }
     
     @FXML
@@ -137,6 +150,7 @@ public class MenuMain extends Application {
         if(buttonTambah.getText().equals("Tambah")){
             enable();
             clearMenu();
+            buttonCancel.setVisible(true);
             buttonHapus.setDisable(true);
             buttonUbah.setDisable(true);
             buttonTambah.setText("Simpan");
@@ -158,55 +172,68 @@ public class MenuMain extends Application {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.initOwner(this.getPrimaryStage());
         String regex = "[0-9]*";
+        
         if(textNamaMenu.getText().isEmpty() || textStok.getText().isEmpty() || textHarga.getText().isEmpty() || comboJenis.getValue() == null){            
             alert.setHeaderText("Form tidak boleh ada yang kosong");
             alert.showAndWait();
-        }else if(!textStok.getText().matches(regex)){
-            alert.setHeaderText("Inputan stok harus angka");
-            alert.showAndWait();
-        }else if(!textHarga.getText().matches(regex)){
-            alert.setHeaderText("Inputan harga harus angka");
-            alert.showAndWait();
-        }else{
-            Menu menu = new Menu();
-            menu.setNamaMenu(textNamaMenu.getText());
-            menu.setJenis(String.valueOf(comboJenis.getValue()));
-            menu.setStok(Integer.parseInt(textStok.getText()));
-            menu.setHarga(Double.parseDouble(textHarga.getText()));
+        }else{        
+            try{
+                double harga = (double) Double.parseDouble(textHarga.getText());
+                System.out.println(harga);
+                if(!textStok.getText().matches(regex)){
+                    alert.setHeaderText("Inputan stok harus angka");
+                    alert.showAndWait();
+                }else{
+                    Menu menu = new Menu();
+                    menu.setNamaMenu(textNamaMenu.getText());
+                    menu.setJenis(String.valueOf(comboJenis.getValue()));
+                    menu.setStok(Integer.parseInt(textStok.getText()));
+                    menu.setHarga((double) harga);
 
-            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-            if(buttonTambah.getText().equals("Simpan")){  
-                genericDao.save(menu);
-                alert2.setHeaderText("Data berhasil disimpan");
-                alert2.showAndWait();
-                loadMenu();
-                
-            }else if(buttonTambah.getText().equals("Ubah")){
-                menu.setIdMenu(Integer.parseInt(textIdMenu.getText()));
-                genericDao.update(menu);
-                alert2.setHeaderText("Data berhasil diubah");
-                alert2.showAndWait();
-                loadMenu();
+                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                    if(buttonTambah.getText().equals("Simpan")){  
+                        genericDao.save(menu);
+                        alert2.setHeaderText("Data berhasil disimpan");
+                        alert2.showAndWait();
+                        loadMenu();
+
+                    }else if(buttonTambah.getText().equals("Ubah")){
+                        menu.setIdMenu(Integer.parseInt(textIdMenu.getText()));
+                        genericDao.update(menu);
+                        alert2.setHeaderText("Data berhasil diubah");
+                        alert2.showAndWait();
+                        loadMenu();
+                    }
+
+                    buttonDefault();
+                    disable();
+                }
+
+            }catch(Exception e){
+                alert.setHeaderText("Inputan harga harus angka");
+                alert.showAndWait();
             }
-            
-            buttonTambah.setText("Tambah");
-            disable();
         }
-        
-        
-        
-        
-        
     }
     
     @FXML
-    private void handleDeleteMenu() {    
-        genericDao.delete((Menu) menuTableView.getSelectionModel().getSelectedItem());
-        loadMenu();
-        clearMenu();
-        buttonTambah.setText("Tambah");
-        buttonHapus.setDisable(true);
-        buttonUbah.setDisable(true);
+    private void handleDeleteMenu() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Apakah anda yakin akan menghapus data ini");
+        alert.showAndWait();
+        
+        
+        if(alert.getResult().getText().equals("OK")){
+            genericDao.delete((Menu) menuTableView.getSelectionModel().getSelectedItem());
+            
+            alert.setHeaderText("Data berhasil dihapus");
+            alert.showAndWait();
+            
+            loadMenu();
+            clearMenu();
+            buttonDefault();
+        }
     }
     
     @FXML
@@ -215,6 +242,8 @@ public class MenuMain extends Application {
         buttonHapus.setVisible(false);
         buttonUbah.setVisible(false);
         buttonTambah.setText("Ubah");
+        buttonCancel.setVisible(true);
+        
         
     }
     
@@ -237,8 +266,30 @@ public class MenuMain extends Application {
     private void clearMenu(){
         textIdMenu.setText("");
         textNamaMenu.setText("");
+        comboJenis.setValue("-- Pilih Jenis Makanan --");
         textStok.setText("");
         textHarga.setText("");
+    }
+    
+    @FXML
+    private void handleCancelMenu(){
+        clearMenu();
+        disable();
+        buttonDefault();
+    }
+    
+    public void buttonDefault(){
+        buttonTambah.setText("Tambah");
+        buttonTambah.setVisible(true);
+        buttonTambah.setDisable(false);
+        
+        buttonCancel.setVisible(false);
+        
+        buttonHapus.setVisible(true);
+        buttonHapus.setDisable(true);
+        
+        buttonUbah.setVisible(true);
+        buttonUbah.setDisable(true);
     }
     
     private void initRootLayout() {
@@ -274,6 +325,7 @@ public class MenuMain extends Application {
 
     public static void main(String[] args) {
         launch(args);
+        
     }
     
 }
