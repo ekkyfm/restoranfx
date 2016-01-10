@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -82,6 +83,7 @@ public class MenuMain extends Application {
     ObservableList<Menu> dataMenu = FXCollections.observableArrayList();
     
     
+    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage=primaryStage;
@@ -90,10 +92,16 @@ public class MenuMain extends Application {
         initRootLayout();
         
     }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+    
+    
     
     @FXML
     private void initialize(){
-        
+        comboJenis.getItems().addAll("Makanan","Minuman");
         menuTableView.getItems().clear();
         idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("idMenu"));
         namaMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("namaMenu"));
@@ -101,6 +109,7 @@ public class MenuMain extends Application {
         hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, Double>("harga"));
         jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
         menuTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> menuDetail(newValue)  );
+
     
         disable();
         buttonUbah.setDisable(true);
@@ -118,7 +127,6 @@ public class MenuMain extends Application {
         disable();
         textIdMenu.setText(String.valueOf(menu.getIdMenu()));
         textNamaMenu.setText(menu.getNamaMenu());
-        // setcombobox
         textStok.setText(String.valueOf(menu.getStok()));
         textHarga.setText(String.valueOf(menu.getHarga()));
     }
@@ -146,21 +154,37 @@ public class MenuMain extends Application {
     
     @FXML
     private void handleSave(){
-        if(textNamaMenu.getText().isEmpty() || textStok.getText().isEmpty() || textHarga.getText().isEmpty()){
-            //Alert
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.initOwner(this.getPrimaryStage());
+        String regex = "[0-9]*";
+        if(textNamaMenu.getText().isEmpty() || textStok.getText().isEmpty() || textHarga.getText().isEmpty() || comboJenis.getValue() == null){            
+            alert.setHeaderText("Form tidak boleh ada yang kosong");
+            alert.showAndWait();
+        }else if(!textStok.getText().matches(regex)){
+            alert.setHeaderText("Inputan stok harus angka");
+            alert.showAndWait();
+        }else if(!textHarga.getText().matches(regex)){
+            alert.setHeaderText("Inputan harga harus angka");
+            alert.showAndWait();
         }else{
             Menu menu = new Menu();
             menu.setNamaMenu(textNamaMenu.getText());
-            menu.setJenis("makanan");
+            menu.setJenis(String.valueOf(comboJenis.getValue()));
             menu.setStok(Integer.parseInt(textStok.getText()));
             menu.setHarga(Double.parseDouble(textHarga.getText()));
 
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
             if(buttonTambah.getText().equals("Simpan")){  
                 genericDao.save(menu);
+                alert2.setHeaderText("Data berhasil disimpan");
+                alert2.showAndWait();
                 loadMenu();
+                
             }else if(buttonTambah.getText().equals("Ubah")){
                 menu.setIdMenu(Integer.parseInt(textIdMenu.getText()));
                 genericDao.update(menu);
+                alert2.setHeaderText("Data berhasil diubah");
+                alert2.showAndWait();
                 loadMenu();
             }
             
@@ -211,7 +235,6 @@ public class MenuMain extends Application {
     private void clearMenu(){
         textIdMenu.setText("");
         textNamaMenu.setText("");
-        comboJenis.setItems(null);
         textStok.setText("");
         textHarga.setText("");
     }

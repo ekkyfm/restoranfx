@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuMain">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuMain">
     <top>
       <AnchorPane prefHeight="118.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
@@ -101,14 +101,14 @@
                                     <Font size="14.0" />
                                  </font></Label>
                               <TextField fx:id="textHarga" promptText="Masukan Harga " GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <ComboBox fx:id="comboJenis" prefHeight="25.0" prefWidth="331.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="comboJenis" prefHeight="25.0" prefWidth="331.0" promptText="-- Pilih Jenis Makanan --" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                         <ButtonBar layoutX="113.0" layoutY="170.0" prefHeight="40.0" prefWidth="200.0">
                           <buttons>
                             <Button fx:id="buttonTambah" mnemonicParsing="false" onAction="#handleNew" style="-fx-border-radius: 5;" text="Tambah" />
-                              <Button fx:id="buttonHapus" mnemonicParsing="false" onAction="#handleDeleteMenu" style="-fx-background-radius: 5;" text="Hapus" />
                               <Button fx:id="buttonUbah" mnemonicParsing="false" onAction="#handleUpdateMenu" style="-fx-border-radius: 5;" text="Ubah" />
+                              <Button fx:id="buttonHapus" mnemonicParsing="false" onAction="#handleDeleteMenu" style="-fx-background-radius: 5;" text="Hapus" />
                           </buttons>
                         </ButtonBar>
                      </children>
