@@ -40,7 +40,7 @@
                   <Button fx:id="btnHapus" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Hapus" />
                   <Button fx:id="btnEdit" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Edit" />
                 <Button fx:id="btnSimpan" mnemonicParsing="false" onAction="#handleSimpan" style="-fx-background-radius: 5;" text="Simpan" />
-                  <Button fx:id="handleCancel" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
               </buttons>
             </ButtonBar>
          </children>
@@ -53,15 +53,16 @@
                <children>
                   <Pane layoutY="-7.0" prefHeight="89.0" prefWidth="816.0" style="-fx-background-color: #ff3c3c;" AnchorPane.bottomAnchor="232.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-21.0" AnchorPane.topAnchor="-7.0">
                      <children>
-                        <Label fx:id="labelMeja" layoutX="178.0" layoutY="49.0" text="Maaf, tidak terdapat meja yang kosong!" textFill="WHITE" />
+                        <Label fx:id="labelMeja" layoutX="245.0" layoutY="50.0" text="Maaf, tidak terdapat meja yang kosong!" textFill="WHITE" />
+                        <Button fx:id="reload" layoutX="173.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleReloadMeja" text="Reload" />
                      </children></Pane>
                   <Label layoutX="23.0" layoutY="14.0" text="No Meja" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font></Label>
                   <ComboBox fx:id="noMejaCombo" layoutX="23.0" layoutY="36.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="146.0" />
-                  <TextField layoutX="533.0" layoutY="36.0" prefHeight="26.0" prefWidth="211.0" promptText="Cari Makanan / Minuman" />
-                  <Button layoutX="744.0" layoutY="36.0" mnemonicParsing="false" text="Cari" AnchorPane.leftAnchor="744.0" />
+                  <TextField fx:id="textCari" layoutX="533.0" layoutY="36.0" prefHeight="26.0" prefWidth="211.0" promptText="Cari Makanan / Minuman" />
+                  <Button layoutX="744.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleCari" text="Cari" AnchorPane.leftAnchor="744.0" />
                   <TableView fx:id="menuTableView" layoutX="-2.0" layoutY="77.0" prefHeight="236.0" prefWidth="791.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="77.0">
                     <columns>
                       <TableColumn fx:id="idMenuColumn" prefWidth="75.0" text="ID Menu" />
@@ -103,6 +104,7 @@
                 <TableColumn fx:id="namaDetailMenuColumn" prefWidth="75.0" text="Nama" />
                 <TableColumn fx:id="jumlahDetailMenuColumn" prefWidth="75.0" text="Jumlah" />
                   <TableColumn fx:id="aksiDetailMenuColumn" prefWidth="75.0" text="Aksi" />
+                  <TableColumn fx:id="hargaDetailMenuColumn" prefWidth="75.0" text="Harga" />
               </columns>
             </TableView>
          </children>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuMain">
+    <top>
+      <AnchorPane prefHeight="118.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="118.0" prefWidth="700.0" style="-fx-background-color: #ff0000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ImageView fitHeight="340.0" fitWidth="327.0" layoutX="-1.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/swirl_pattern.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="358.0" fitWidth="384.0" layoutX="326.0" layoutY="-1.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/swirl_pattern.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="340.0" fitWidth="450.0" layoutX="684.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/swirl_pattern.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="133.0" layoutY="56.0" text="RESTO" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="43.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="136.0" layoutY="34.0" text="Point Of Sale" textFill="WHITE">
+                     <font>
+                        <Font name="Candara Italic" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="256.0" layoutY="59.0" text="Application" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria Italic" size="37.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <ImageView fitHeight="91.0" fitWidth="93.0" layoutX="27.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../image/Restaurant-icon.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView prefHeight="650.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" text="Meja" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button layoutX="7.0" layoutY="25.0" mnemonicParsing="false" text="Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <SplitPane dividerPositions="0.5" layoutX="57.0" layoutY="58.0" orientation="VERTICAL" prefHeight="482.0" prefWidth="824.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <GridPane layoutX="43.0" layoutY="21.0" prefHeight="150.0" prefWidth="380.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="102.0" minWidth="10.0" prefWidth="102.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="10.0" prefWidth="303.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Nama" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label text="Jenis" GridPane.rowIndex="2">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label text="Stok" GridPane.rowIndex="3">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="textIdMenu" promptText="Masukan Id Menu" GridPane.columnIndex="1" />
+                              <TextField fx:id="textNamaMenu" promptText="Masukan Nama Menu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="textStok" promptText="Masukan Stok Menu" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label text="Harga" GridPane.rowIndex="4">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="textHarga" promptText="Masukan Harga " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <ComboBox fx:id="comboJenis" prefHeight="25.0" prefWidth="331.0" promptText="-- Pilih Jenis Makanan --" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                        <ButtonBar layoutX="113.0" layoutY="170.0" prefHeight="40.0" prefWidth="200.0">
+                          <buttons>
+                            <Button fx:id="buttonTambah" mnemonicParsing="false" onAction="#handleNew" style="-fx-border-radius: 5;" text="Tambah" />
+                              <Button fx:id="buttonUbah" mnemonicParsing="false" onAction="#handleUpdateMenu" style="-fx-border-radius: 5;" text="Ubah" />
+                              <Button fx:id="buttonHapus" mnemonicParsing="false" onAction="#handleDeleteMenu" style="-fx-background-radius: 5;" text="Hapus" />
+                          </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <TableView fx:id="menuTableView" layoutX="50.0" prefHeight="237.0" prefWidth="822.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="No" />
+                            <TableColumn fx:id="idMenuColumn" prefWidth="75.0" text="Id" />
+                              <TableColumn fx:id="namaMenuColumn" prefWidth="75.0" text="Nama" />
+                              <TableColumn fx:id="jenisColumn" prefWidth="75.0" text="Jenis" />
+                              <TableColumn fx:id="stokColumn" prefWidth="75.0" text="Stok" />
+                              <TableColumn fx:id="hargaColumn" prefWidth="75.0" text="Harga" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
