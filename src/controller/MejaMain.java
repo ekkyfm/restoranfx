@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Meja;
 
 /**
@@ -91,7 +93,13 @@ public class MejaMain extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage=primaryStage;
         this.primaryStage.setTitle("Meja");
-      
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+             System.exit(0);
+          }
+        });
+        
         initRootLayout();
     }
     
@@ -112,20 +120,9 @@ public class MejaMain extends Application {
     @FXML
     private void initialize(){
         
-        mejaTableView.getItems().clear();
         textKategori.getItems().addAll("Smoking", "No Smoking");
         textStatus.getItems().addAll("Tersedia", "Tidak Tersedia");
-        noMejaColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("noMeja"));
-        kategoriColumn.setCellValueFactory(new PropertyValueFactory<Meja, String>("kategori"));
-        lantaiColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("lantai"));
-        kapasitasColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("kapasitas"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("status"));
-        mejaTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> mejaDetail(newValue)  );
-    
-        textNoMeja.setVisible(false);
-        handleCancelMeja();
-        mejaTableView.setItems(getAllMeja());
-        
+        loadMeja();
     }
     
     public ObservableList getAllMeja(){
@@ -148,9 +145,9 @@ public class MejaMain extends Application {
             textKapasitas.setText(String.valueOf(meja.getKapasitas()));
 
             if(meja.getStatus() == 0)
-                textStatus.setValue("Tersedia");
-            else
                 textStatus.setValue("Tidak Tersedia");
+            else
+                textStatus.setValue("Tersedia");
         }
         
         
@@ -215,8 +212,6 @@ public class MejaMain extends Application {
     }
     
     
-    
-    //CRUD
     @FXML
     private void handleSaveMeja(){
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -238,9 +233,9 @@ public class MejaMain extends Application {
             meja.setKapasitas(Integer.parseInt(textKapasitas.getText()));
             
             if(textStatus.getValue().equals("Tersedia"))
-                meja.setStatus(0);
-            else
                 meja.setStatus(1);
+            else
+                meja.setStatus(0);
             
 
             if(buttonTambahMeja.getText().equals("Simpan")){  
@@ -274,7 +269,6 @@ public class MejaMain extends Application {
         
     }
     
-    
     @FXML
     private void handleDeleteMeja() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -302,14 +296,15 @@ public class MejaMain extends Application {
             lantaiColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("lantai"));
             kapasitasColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("kapasitas"));
             statusColumn.setCellValueFactory(new PropertyValueFactory<Meja, Integer>("status"));
-                  
+            mejaTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> mejaDetail(newValue)  );
+
+            textNoMeja.setVisible(false);
+            handleCancelMeja();
             mejaTableView.setItems(getAllMeja());
-            clearMeja();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-
   
     public static void main(String[] args) {
         launch(args);

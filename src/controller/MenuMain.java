@@ -12,6 +12,7 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Menu;
 import model.Pesanan;
 
@@ -95,6 +97,12 @@ public class MenuMain extends Application {
         this.primaryStage=primaryStage;
         this.primaryStage.setTitle("Menu");
       
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+          public void handle(WindowEvent we) {
+             System.exit(0);
+          }
+        });
+                    
         initRootLayout();
         
     }
@@ -106,22 +114,7 @@ public class MenuMain extends Application {
     @FXML
     private void initialize(){
         comboJenis.getItems().addAll("Makanan","Minuman");
-        menuTableView.getItems().clear();
-        
-        idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("idMenu"));
-        namaMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("namaMenu"));
-        stokColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("stok"));
-        hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, Double>("harga"));
-        jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
-        menuTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> menuDetail(newValue)  );
-
-        textIdMenu.setVisible(false);
-        disable();
-        buttonDefault();
-        
-        menuTableView.setItems(getAllMenu());
-        
-       
+        loadMenu();
     }
     
     public void menuDetail(Menu menu){
@@ -159,7 +152,6 @@ public class MenuMain extends Application {
         }
        
     }
-  
     
     public ObservableList getAllMenu(){
         GenericDao genericDao = new GenericDao();
@@ -308,21 +300,23 @@ public class MenuMain extends Application {
     
     private void loadMenu(){
         try{
-            menuTableView.getItems().clear();
+            menuTableView.getItems().clear();        
             idMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("idMenu"));
             namaMenuColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("namaMenu"));
             stokColumn.setCellValueFactory(new PropertyValueFactory<Menu, Integer>("stok"));
             hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, Double>("harga"));
-            jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));   
+            jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
+            menuTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> menuDetail(newValue)  );
+
+            textIdMenu.setVisible(false);
+            handleCancelMenu();
+
             menuTableView.setItems(getAllMenu());
-            clearMenu();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
     
-    
-
     public static void main(String[] args) {
         launch(args);
         
