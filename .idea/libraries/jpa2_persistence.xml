@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="jpa2-persistence">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/jpa2-persistence/javax.persistence-2.1.0-doc.zip!/" />
       <root url="jar://$PROJECT_DIR$/lib/jpa2-persistence/hibernate-jpa-2.1-api-1.0.0.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jpa2-persistence/javax.persistence-2.1.0-doc.zip!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

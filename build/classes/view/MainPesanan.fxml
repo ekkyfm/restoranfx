@@ -40,7 +40,7 @@
                   <Button fx:id="btnHapus" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Hapus" />
                   <Button fx:id="btnEdit" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Edit" />
                 <Button fx:id="btnSimpan" mnemonicParsing="false" onAction="#handleSimpan" style="-fx-background-radius: 5;" text="Simpan" />
-                  <Button fx:id="handleCancel" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel" />
               </buttons>
             </ButtonBar>
          </children>
@@ -53,7 +53,8 @@
                <children>
                   <Pane layoutY="-7.0" prefHeight="89.0" prefWidth="816.0" style="-fx-background-color: #ff3c3c;" AnchorPane.bottomAnchor="232.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-21.0" AnchorPane.topAnchor="-7.0">
                      <children>
-                        <Label fx:id="labelMeja" layoutX="178.0" layoutY="49.0" text="Maaf, tidak terdapat meja yang kosong!" textFill="WHITE" />
+                        <Label fx:id="labelMeja" layoutX="245.0" layoutY="50.0" text="Maaf, tidak terdapat meja yang kosong!" textFill="WHITE" />
+                        <Button layoutX="173.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleReloadMeja" text="Reload" />
                      </children></Pane>
                   <Label layoutX="23.0" layoutY="14.0" text="No Meja" textFill="WHITE">
                      <font>
