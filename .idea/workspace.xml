@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a930e803-b348-40f7-b7d1-01fbe1c6276d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/view/Dapur.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dao/DaoPesanan.java" afterPath="$PROJECT_DIR$/src/dao/DaoPesanan.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/DapurController.java" afterPath="$PROJECT_DIR$/src/controller/DapurController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/model/DetailPesanan.hbm.xml" afterPath="$PROJECT_DIR$/build/classes/model/DetailPesanan.hbm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/view/MainPesanan.fxml" afterPath="$PROJECT_DIR$/build/classes/view/MainPesanan.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/restoran/view/MainPesanan.fxml" afterPath="$PROJECT_DIR$/out/production/restoran/view/MainPesanan.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/view/MainPesanan.fxml" afterPath="$PROJECT_DIR$/src/view/MainPesanan.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/restoran/view/admin/Meja.fxml" afterPath="$PROJECT_DIR$/out/production/restoran/view/admin/Meja.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/restoran/view/admin/Menu.fxml" afterPath="$PROJECT_DIR$/out/production/restoran/view/admin/Menu.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/model/Pesanan.hbm.xml" afterPath="$PROJECT_DIR$/build/classes/model/Pesanan.hbm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controller/PesananController.java" afterPath="$PROJECT_DIR$/src/controller/PesananController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/private.properties" afterPath="$PROJECT_DIR$/nbproject/private/private.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/nbproject/private/private.xml" afterPath="$PROJECT_DIR$/nbproject/private/private.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a930e803-b348-40f7-b7d1-01fbe1c6276d" name="Default" comment="" />
     <ignored path="restoran.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -374,7 +359,7 @@
       <recent name="$PROJECT_DIR$/src/view" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.DapurController">
+  <component name="RunManager" selected="Application.PesananController">
     <configuration default="false" name="PesananController" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -423,6 +408,26 @@
         </pattern>
       </extension>
       <option name="MAIN_CLASS_NAME" value="controller.DapurController" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="restoran" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="MenuMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="controller.MenuMain" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -735,16 +740,18 @@
       <envs />
       <method />
     </configuration>
-    <list size="3">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Application.PesananController" />
       <item index="1" class="java.lang.String" itemvalue="Application.MejaMain" />
       <item index="2" class="java.lang.String" itemvalue="Application.DapurController" />
+      <item index="3" class="java.lang.String" itemvalue="Application.MenuMain" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.DapurController" />
-        <item index="1" class="java.lang.String" itemvalue="Application.PesananController" />
+      <list size="4">
+        <item index="0" class="java.lang.String" itemvalue="Application.PesananController" />
+        <item index="1" class="java.lang.String" itemvalue="Application.MenuMain" />
         <item index="2" class="java.lang.String" itemvalue="Application.MejaMain" />
+        <item index="3" class="java.lang.String" itemvalue="Application.DapurController" />
       </list>
     </recent_temporary>
   </component>
@@ -772,16 +779,16 @@
       <workItem from="1452494381998" duration="2699000" />
       <workItem from="1452525084013" duration="15552000" />
       <workItem from="1452581636986" duration="8713000" />
-      <workItem from="1452604589749" duration="805000" />
+      <workItem from="1452604589749" duration="1811000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32278000" />
+    <option name="totallyTimeSpent" value="33284000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="53" y="24" width="1313" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -796,7 +803,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24940805" sideWeight="0.36038187" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24940805" sideWeight="0.63961816" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24940805" sideWeight="0.63961816" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
