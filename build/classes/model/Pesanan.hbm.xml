@@ -17,7 +17,7 @@
         <property name="status" type="string">
             <column name="status" length="2" not-null="true" />
         </property>
-        <set name="detailPesanans" table="detail_pesanan" inverse="true" lazy="true" fetch="select">
+        <set name="detailPesanans" table="detail_pesanan" inverse="true" lazy="false" fetch="select">
             <key>
                 <column name="id_pesanan" not-null="true" />
             </key>
