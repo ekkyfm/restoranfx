@@ -6,27 +6,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MejaMain">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MejaController">
    <top>
       <AnchorPane prefHeight="118.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
             <Pane prefHeight="118.0" prefWidth="700.0" style="-fx-background-color: #ff0000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <ImageView fitHeight="340.0" fitWidth="327.0" layoutX="-1.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/swirl_pattern.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="358.0" fitWidth="384.0" layoutX="326.0" layoutY="-1.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/swirl_pattern.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="340.0" fitWidth="450.0" layoutX="684.0" opacity="0.3" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../image/swirl_pattern.png" />
-                     </image>
-                  </ImageView>
                   <Label layoutX="133.0" layoutY="56.0" text="RESTO" textFill="WHITE">
                      <font>
                         <Font name="Calibri Bold" size="43.0" />
@@ -57,7 +42,7 @@
          <children>
             <ListView prefHeight="650.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Button layoutX="14.0" layoutY="8.0" mnemonicParsing="false" text="Meja" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button layoutX="7.0" layoutY="25.0" mnemonicParsing="false" text="Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="buttonMenu" layoutX="7.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleButtonMenu" text="Menu" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
    </left>

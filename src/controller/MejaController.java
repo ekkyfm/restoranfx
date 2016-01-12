@@ -17,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -35,7 +36,7 @@ import model.Meja;
  *
  * @author VIKI
  */
-public class MejaMain extends Application {
+public class MejaController extends Application {
     
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -87,6 +88,9 @@ public class MejaMain extends Application {
     @FXML
     private Button buttonCancelMeja;
     
+    @FXML
+    private Button buttonMenu;
+    
     ObservableList<Meja> dataMeja = FXCollections.observableArrayList();
     
     @Override
@@ -115,6 +119,18 @@ public class MejaMain extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    public void handleButtonMenu(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        Scene scene;
+        loader.setLocation(LoginController.class.getResource("../view/admin/Menu.fxml"));
+        rootLayout = loader.load();
+        scene = new Scene(rootLayout);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
     
     @FXML

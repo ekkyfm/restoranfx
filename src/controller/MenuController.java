@@ -12,9 +12,11 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -34,7 +36,7 @@ import model.Pesanan;
  *
  * @author VIKI
  */
-public class MenuMain extends Application {
+public class MenuController extends Application {
     
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -87,6 +89,10 @@ public class MenuMain extends Application {
     @FXML
     private Button buttonCancel;
     
+    @FXML
+    private Button buttonMeja;
+    
+    
     
     ObservableList<Menu> dataMenu = FXCollections.observableArrayList();
     
@@ -136,6 +142,17 @@ public class MenuMain extends Application {
             textHarga.setText(String.valueOf(menu.getHarga()));
         }
         
+    }
+    
+    public void handleButtonMeja(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader();
+        Scene scene;
+        loader.setLocation(LoginController.class.getResource("../view/admin/Meja.fxml"));
+        rootLayout = loader.load();
+        scene = new Scene(rootLayout);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
     
     @FXML
