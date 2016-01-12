@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DapurController">
+   <top>
+      <AnchorPane prefHeight="118.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="118.0" prefWidth="1024.0" style="-fx-background-color: #ff1d1d;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="259.0" layoutY="59.0" text="Aplication" textFill="WHITE">
+                     <font>
+                        <Font name="Cambria Italic" size="37.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="134.0" layoutY="55.0" text="RESTO" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="43.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="134.0" layoutY="33.0" text="Point Of Sale" textFill="WHITE">
+                     <font>
+                        <Font name="Candara Italic" size="20.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="113.0" fitWidth="111.0" layoutX="4.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../image/Restaurant-icon.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <ButtonBar layoutX="715.0" layoutY="64.0" prefHeight="118.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
+               <buttons>
+                  <Button mnemonicParsing="false" text="Approve" />
+               </buttons></ButtonBar>
+         </children>
+      </AnchorPane>
+   </top>
+   <left>
+      <TableView fx:id="pesananTable" prefWidth="300.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="idPesananColumn" prefWidth="75.0" text="Id Pesanan" />
+          <TableColumn fx:id="noMejaColumn" prefWidth="75.0" text="No Meja" />
+            <TableColumn fx:id="waktuColumn" prefWidth="75.0" text="Waktu" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </left>
+   <center>
+      <TableView fx:id="menuTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="namaMenuColumn" prefWidth="75.0" text="Nama" />
+          <TableColumn fx:id="jumlahColumn" maxWidth="75.0" minWidth="75.0" prefWidth="75.0" text="Jumlah" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+   
+</BorderPane>

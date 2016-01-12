@@ -17,15 +17,7 @@ import org.hibernate.cfg.Configuration;
 
 public class GenericDao {
     private static SessionFactory factory;
-    public static void main(String[] args) {
-        List<Meja> dataMeja = new ArrayList<>();
-        GenericDao dao = new GenericDao();
-//        dataMeja = dao.getData("from Meja where id_menu ="+5);
-
-//        dao.delete((Menu) dao.getData("from Menu where id_menu = 4"));
-//        dao.delete((Meja) dao.getData("from Meja where no_meja = 4"));
-        
-    }
+   
     public Integer save(Object m){
         try{
             factory = new Configuration().configure().buildSessionFactory();
