@@ -70,6 +70,7 @@ public class DaoPesanan {
                 session.delete(setDetailPesanan);
 
             }
+
             for (DetailPesanan detailPesanan : listDetailPesanan) {
                 session.save(detailPesanan);
             }
