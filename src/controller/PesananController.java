@@ -27,13 +27,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Observable;
-import java.util.Set;
+import java.util.*;
+
 import static javafx.application.Application.launch;
 
 import javafx.beans.value.ObservableValue;
@@ -46,6 +41,7 @@ import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.NumberStringConverter;
 import model.Meja;
 import model.Menu;
+import org.hibernate.Hibernate;
 
 public class PesananController extends Application {
 
@@ -57,6 +53,8 @@ public class PesananController extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+
+    public Pesanan draf;
     
     
     private boolean searchClicked = false;
@@ -115,6 +113,9 @@ public class PesananController extends Application {
     @FXML
     private Button btnCancel;
     @FXML
+    private Button btnSimpanEdit;
+
+    @FXML
     private Button reload;
     @FXML
     private TextField textCari;
@@ -139,7 +140,7 @@ public class PesananController extends Application {
 
     public ObservableList getAllMenuData(String like){
         GenericDao genericDao = new GenericDao();
-        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Menu where stok >=0 and nama_menu like '%"+like+"%' or jenis like '%"+like+"%' or harga like '%"+like+"%'"));
+        menuData = FXCollections.observableList((List<Menu>) genericDao.getAllData("from Menu where stok >=0 and nama_menu like '%" + like + "%' or jenis like '%" + like + "%' or harga like '%" + like + "%'"));
         return menuData;
     }
     
@@ -183,7 +184,7 @@ public class PesananController extends Application {
     private void initialize(){
         ArrayList<Button> btnDisable = new ArrayList<>(Arrays.asList(btnCancel,btnEdit,btnHapus,btnSimpan));
         buttonService(btnDisable, true);
-        ArrayList<TableView> tableDisable = new ArrayList<>(Arrays.asList(pesananTableView,detailMenuTableView,menuTableView));
+        ArrayList<TableView> tableDisable = new ArrayList<>(Arrays.asList(detailMenuTableView,menuTableView));
         tableService(tableDisable, true);
         noMejaCombo.setDisable(true);
         labelMeja.setVisible(false);
@@ -247,67 +248,7 @@ public class PesananController extends Application {
         selectedMenu.add(new DetailPesanan(m, 1));
     }
     
-    @FXML
-    public void handleNew(){
-        selectedMenu.clear();
-        
-        ArrayList<Button> btnDisable = new ArrayList<>(Arrays.asList(btnEdit,btnHapus));
-        buttonService(btnDisable, true);
-        ArrayList<Button> btnEnable = new ArrayList<>(Arrays.asList(btnCancel,btnSimpan));
-        buttonService(btnEnable, false);
-        labelMeja.setVisible(false);
-        noMejaCombo.setDisable(false);
-        textCari.setDisable(false);
-        ArrayList<TableView> tableDisable = new ArrayList<>(Arrays.asList(pesananTableView,detailMenuTableView,menuTableView));
-        tableService(tableDisable, false);
-        
-        detailMenuTableView.setItems(selectedMenu);
-        detailMenuTableView.setDisable(false);
-        detailMenuTableView.setEditable(true);
-        menuTableView.setDisable(false);
-    }
-   
-    
-    @FXML
-    public void handleSimpan(){
-        DaoPesanan dao = new DaoPesanan();
-            if (noMejaCombo.getValue()==null) {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initOwner(this.getPrimaryStage());
-                alert.setTitle("Lengkapi data");
-                alert.setHeaderText("Silahkan lengkapi data no meja!");
-                alert.showAndWait();
-            }else if(selectedMenu.size()<=0){
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.initOwner(this.getPrimaryStage());
-                alert.setTitle("Lengkapi data");
-                alert.setHeaderText("Silahkan pilih minimal 1 menu!");
-                alert.showAndWait();
-            }else{
-                    dao.save(new Pesanan(Date.from(Instant.now()) , Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()), "0"), selectedMenu);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.initOwner(this.getPrimaryStage());
-                    alert.setTitle("Gagal");
-                    alert.setHeaderText("Data berhasil disimpan");
-                    alert.showAndWait();
-                    detailMenuTableView.setEditable(false);
-                    detailMenuTableView.setDisable(true);
-                    menuTableView.setDisable(true);
-                    btnCancel.setDisable(true);
-                    btnSimpan.setDisable(true);
-                    btnNew.setDisable(false);
-                    
-                    try{
-                        setTableViewMenu();
-                        setTableViewPesanan();
-                        setTableDetailPesanan();
-                        setComboMeja();
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-            }
-        
-    }
+
     
     public void setComboMeja(){
         noMejaCombo.getItems().clear();
@@ -335,8 +276,8 @@ public class PesananController extends Application {
         hargaColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("harga"));
         jenisColumn.setCellValueFactory(new PropertyValueFactory<Menu, String>("jenis"));
         menuTableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Menu> observable, Menu oldValue, Menu newValue) -> {
-            if (newValue!=null) {
-                Double hargaFromTable =Double.parseDouble(newValue.getHarga().toString());
+            if (newValue != null) {
+                Double hargaFromTable = Double.parseDouble(newValue.getHarga().toString());
                 harga = harga + hargaFromTable;
                 labelHarga.setText(harga.toString());
                 setSelectedMenu(newValue);
@@ -375,9 +316,23 @@ public class PesananController extends Application {
         waktuColumn.setCellValueFactory(new PropertyValueFactory<Pesanan,String>("waktu"));
         statusPesananColumn.setCellValueFactory(new PropertyValueFactory<Pesanan, String>("status"));
         pesananTableView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Pesanan> observable, Pesanan oldValue, Pesanan newValue) -> {
-            Set detailPesanan = newValue.getDetailPesanans();
-            List<DetailPesanan> dp = new ArrayList<DetailPesanan>(detailPesanan);
-            selectedMenu.addAll(FXCollections.observableList(dp));
+            selectedMenu.clear();
+            Set<DetailPesanan> dp = new HashSet<DetailPesanan>();
+            dp = newValue.getDetailPesanans();
+            Hibernate.initialize(newValue.getDetailPesanans());
+            for (DetailPesanan d : dp) {
+                Hibernate.initialize(d.getMenu());
+                selectedMenu.add(d);
+            }
+            draf = newValue;
+            System.out.println(newValue.getIdPesanan());
+            if (newValue.getStatus().equals("1")) {
+                btnEdit.setDisable(true);
+                btnHapus.setDisable(true);
+            } else {
+                btnEdit.setDisable(false);
+                btnHapus.setDisable(false);
+            }
         });
         pesananTableView.setItems(getAllPesananData());
     }
@@ -385,11 +340,13 @@ public class PesananController extends Application {
     public void setTableDetailPesanan(){
         labelHarga.setText("0");
         detailMenuTableView.getItems().clear();
+
         namaDetailMenuColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DetailPesanan, String>, ObservableValue<String>>() {
 
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<DetailPesanan, String> param) {
                 SimpleStringProperty namaProperty = new SimpleStringProperty();
+
                 namaProperty.setValue(param.getValue().getMenu().getNamaMenu());
                 return namaProperty;
             }
@@ -461,11 +418,121 @@ public class PesananController extends Application {
         pesananTableView.setDisable(true);
         noMejaCombo.setDisable(true);
         reload.setVisible(false);
+    }
+
+    @FXML
+    public void handleCari() {
+        setTableViewMenu(getAllMenuData(textCari.getText()));
+    }
+
+    @FXML
+    public void handleEdit(){
+        detailMenuTableView.setDisable(false);
+        detailMenuTableView.setEditable(true);
+        btnSimpan.setVisible(false);
+        btnSimpanEdit.setVisible(true);
+        noMejaCombo.setDisable(false);
+    }
+
+    @FXML
+    public void handleSimpanEdit(){
+        DaoPesanan dao = new DaoPesanan();
+        if(selectedMenu.size()<=0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(this.getPrimaryStage());
+            alert.setTitle("Lengkapi data");
+            alert.setHeaderText("Silahkan pilih minimal 1 menu!");
+            alert.showAndWait();
+        }else{
+            dao.update(draf,selectedMenu);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.initOwner(this.getPrimaryStage());
+            alert.setTitle("Gagal");
+            alert.setHeaderText("Data berhasil disimpan");
+            alert.showAndWait();
+            detailMenuTableView.setEditable(false);
+            detailMenuTableView.setDisable(true);
+            menuTableView.setDisable(true);
+            btnCancel.setDisable(true);
+            btnSimpan.setDisable(true);
+            btnNew.setDisable(false);
+
+            try{
+                setTableViewMenu();
+                setTableViewPesanan();
+                setTableDetailPesanan();
+                setComboMeja();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
     }
 
     @FXML
-    public void handleCari(){
-        setTableViewMenu(getAllMenuData(textCari.getText()));
+    public void handleHapus(){
+        GenericDao dao = new GenericDao();
+        dao.delete(draf);
+    }
+    @FXML
+    public void handleNew(){
+        selectedMenu.clear();
+
+        ArrayList<Button> btnDisable = new ArrayList<>(Arrays.asList(btnEdit,btnHapus));
+        buttonService(btnDisable, true);
+        ArrayList<Button> btnEnable = new ArrayList<>(Arrays.asList(btnCancel,btnSimpan));
+        buttonService(btnEnable, false);
+        labelMeja.setVisible(false);
+        noMejaCombo.setDisable(false);
+        textCari.setDisable(false);
+        ArrayList<TableView> tableDisable = new ArrayList<>(Arrays.asList(pesananTableView,detailMenuTableView,menuTableView));
+        tableService(tableDisable, false);
+
+        detailMenuTableView.setItems(selectedMenu);
+        detailMenuTableView.setDisable(false);
+        detailMenuTableView.setEditable(true);
+        menuTableView.setDisable(false);
+    }
+
+
+    @FXML
+    public void handleSimpan(){
+        DaoPesanan dao = new DaoPesanan();
+        if (noMejaCombo.getValue()==null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(this.getPrimaryStage());
+            alert.setTitle("Lengkapi data");
+            alert.setHeaderText("Silahkan lengkapi data no meja!");
+            alert.showAndWait();
+        }else if(selectedMenu.size()<=0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(this.getPrimaryStage());
+            alert.setTitle("Lengkapi data");
+            alert.setHeaderText("Silahkan pilih minimal 1 menu!");
+            alert.showAndWait();
+        }else{
+            dao.save(new Pesanan(Date.from(Instant.now()) , Integer.parseInt(noMejaCombo.getSelectionModel().getSelectedItem().toString()), "0"), selectedMenu);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.initOwner(this.getPrimaryStage());
+            alert.setTitle("Gagal");
+            alert.setHeaderText("Data berhasil disimpan");
+            alert.showAndWait();
+            detailMenuTableView.setEditable(false);
+            detailMenuTableView.setDisable(true);
+            menuTableView.setDisable(true);
+            btnCancel.setDisable(true);
+            btnSimpan.setDisable(true);
+            btnNew.setDisable(false);
+
+            try{
+                setTableViewMenu();
+                setTableViewPesanan();
+                setTableDetailPesanan();
+                setComboMeja();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
     }
 }

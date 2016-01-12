@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Iterator;
 import java.util.List;
 import model.DetailPesanan;
 import model.Pesanan;
@@ -46,7 +47,9 @@ public class DaoPesanan {
         return noPesanan;
     }
 
-    public boolean update(Pesanan pesanan, DetailPesanan detailPesanan){
+
+
+    public boolean update(Pesanan pesanan, List<DetailPesanan> listDetailPesanan){
         try{
             factory = new Configuration().configure().buildSessionFactory();
         }catch (Throwable ex) {
@@ -59,11 +62,19 @@ public class DaoPesanan {
         Integer noDetailPesanan= null;
         try {
             tx=session.beginTransaction();
-            noPesanan = (Integer) session.save(pesanan);
-            detailPesanan.setPesanan(pesanan);
-            session.save(detailPesanan);
+            System.out.println("hapus:" + pesanan.getIdPesanan());
+            Iterator<DetailPesanan> detailPesananIterator = pesanan.getDetailPesanans().iterator();
+            while(detailPesananIterator.hasNext()){
+                DetailPesanan setDetailPesanan = detailPesananIterator.next();
+                System.out.println(setDetailPesanan.getIdDetailPesanan());
+                session.delete(setDetailPesanan);
+
+            }
+            for (DetailPesanan detailPesanan : listDetailPesanan) {
+                session.save(detailPesanan);
+            }
+
             tx.commit();
-            return true;
         }catch (HibernateException e){
             if(tx!=null){
                 tx.rollback();

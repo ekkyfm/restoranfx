@@ -37,9 +37,10 @@
             <ButtonBar layoutX="715.0" layoutY="64.0" prefHeight="118.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="60.0">
               <buttons>
                   <Button fx:id="btnNew" mnemonicParsing="false" onAction="#handleNew" text="New" />
-                  <Button fx:id="btnHapus" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Hapus" />
-                  <Button fx:id="btnEdit" mnemonicParsing="false" style="-fx-background-radius: 5;" text="Edit" />
-                <Button fx:id="btnSimpan" mnemonicParsing="false" onAction="#handleSimpan" style="-fx-background-radius: 5;" text="Simpan" />
+                  <Button fx:id="btnHapus" mnemonicParsing="false" onAction="#handleHapus" style="-fx-background-radius: 5;" text="Hapus" />
+                  <Button fx:id="btnEdit" mnemonicParsing="false" onAction="#handleEdit" style="-fx-background-radius: 5;" text="Edit" />
+                  <Button fx:id="btnSimpan" mnemonicParsing="false" onAction="#handleSimpan" style="-fx-background-radius: 5;" text="Simpan" />
+                  <Button fx:id="btnSimpanEdit" mnemonicParsing="false" onAction="#handleSimpanEdit" style="-fx-background-radius: 5;" text="Simpan" />
                   <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
               </buttons>
             </ButtonBar>
